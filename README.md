@@ -24,7 +24,6 @@ Build a **lightweight internal document management system** that allows users to
 - **Search for documents by title** to quickly find relevant information.
 - **Keep track of recently viewed documents** for easy access.
 - **Create, edit, and delete documents within folders.**
-- (Optional) **Support Markdown formatting** with a live preview mode.
 ---
 
 ## **Requirements:**
