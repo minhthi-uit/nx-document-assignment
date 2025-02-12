@@ -1,5 +1,4 @@
 # Document Management Assignment
-
 1. **Clone the Repository**
    ```bash
    git clone https://github.com/nmeowt/nx-document-assignment.git
@@ -18,7 +17,6 @@
    ```
 
 ## **Description:**
-
 Build a **lightweight internal document management system** that allows users to organize, search, and access documents efficiently.
 
 - **Documents are organized into folders & files.**
@@ -27,7 +25,6 @@ Build a **lightweight internal document management system** that allows users to
 - **Keep track of recently viewed documents** for easy access.
 - **Create, edit, and delete documents within folders.**
 - (Optional) **Support Markdown formatting** with a live preview mode.
-
 ---
 
 ## **Requirements:**
@@ -39,8 +36,8 @@ Build a **lightweight internal document management system** that allows users to
 - **Recently viewed documents** should be saved and displayed for quick access.
 - API calls should be **efficient and properly handled**, with error messages and loading states.
 
-## **Optional Features (Bonus Points)**:
 
+## **Optional Features (Bonus Points)**:
 - Use **any styling approach** (or none). Options: Tailwind, MUI, Styled Components, etc.
 - Write **a couple of tests**—2 or 3 should be enough. No need for full test coverage.
 - **Performance Optimization:**
@@ -60,16 +57,15 @@ Please see the [API docs here](./server/README.md).
 ## **Submitting Your Solution**
 
 1. **Source Code:**
-
    - Provide the link to your **public GitHub repository** containing all source code files for the **frontend of the Document Management App**.
    - This should include:
      - All **React and TypeScript files** (for the frontend).
      - Any **assets, configurations, and dependencies** required to run the application.
    - The backend is already provided, so candidates only need to implement the frontend.
 
-2. **Live Link (Optional):**
-   - Optionally, you can **deploy the website** on a hosting platform and provide the live link.
-   - This will allow the reviewers to interact with the application directly.
+2. **Live Link (Optional):**  
+   - Optionally, you can **deploy the website** on a hosting platform and provide the live link.  
+   - This will allow the reviewers to interact with the application directly.  
 
 ## **Evaluation Criteria**
 
@@ -89,7 +85,6 @@ Your submission will be assessed based on the following key factors:
 - Are asynchronous calls (API requests) **handled correctly** with proper error handling?
 
 ### **3. Optional Enhancements (10%)**
-
 - Has the developer implemented basic styling for a user-friendly UI?
 - Are there performance optimizations (e.g., avoiding unnecessary re-renders with React.memo, useCallback)?
 - Has the developer added basic tests (if any) to validate core features?
