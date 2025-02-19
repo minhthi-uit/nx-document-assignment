@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './app/app';
 import { Toaster } from './components/ui/toaster';
+import { TooltipProvider } from './components/ui/tooltip';
 import './styles.css';
 
 const root = ReactDOM.createRoot(
@@ -12,8 +13,10 @@ const root = ReactDOM.createRoot(
 root.render(
   <StrictMode>
     <BrowserRouter>
-      <App />
-      <Toaster />
+      <TooltipProvider delayDuration={0}>
+        <App />
+        <Toaster />
+      </TooltipProvider>
     </BrowserRouter>
   </StrictMode>
 );

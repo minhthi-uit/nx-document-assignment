@@ -15,8 +15,8 @@ interface FolderListProps {
   folders: FolderType[];
   currentFolder: FolderType | null;
   onFolderClick: (folder: FolderType) => void;
-  onCreateFolder: (name: string) => Promise<void>;
-  onDeleteFolder: (folderId: string) => Promise<void>;
+  onCreateFolder: (name: string) => Promise<boolean>;
+  onDeleteFolder: (folderId: string) => Promise<boolean>;
 }
 
 export const FolderList = ({

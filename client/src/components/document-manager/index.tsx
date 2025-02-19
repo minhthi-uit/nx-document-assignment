@@ -1,10 +1,10 @@
 import { Plus } from 'lucide-react';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useToast } from '../../hooks/use-toast';
-import { useDocuments } from '../../hooks/useDocuments';
-import { useFolders } from '../../hooks/useFolders';
-import { useHistory } from '../../hooks/useHistory';
+import { Document, useDocuments } from '../../hooks/useDocuments';
+import { Folder, useFolders } from '../../hooks/useFolders';
+import { HistoryItem, useHistory } from '../../hooks/useHistory';
 import { api } from '../../utils/api';
 import { Button } from '../ui/button';
 import {
@@ -22,25 +22,41 @@ import { FolderList } from './FolderList';
 import { RecentDocuments } from './RecentDocument';
 import { SearchBar } from './SearchBar';
 
-const MarkdownPreview = ({ content }) => (
+interface AppState {
+  currentFolder: Folder | null;
+  searchQuery: string;
+  searchResults: Document[] | null;
+}
+
+interface EditingState {
+  document: Document | null;
+  content: string;
+}
+
+interface MarkdownPreviewProps {
+  content: string | undefined;
+}
+
+const MarkdownPreview = ({ content }: MarkdownPreviewProps) => (
   <div className="prose prose-sm max-w-none dark:prose-invert">
     <ReactMarkdown>{content || ''}</ReactMarkdown>
   </div>
 );
 
 export function DocumentManager() {
-  const [state, setState] = useState({
+  const [state, setState] = useState<AppState>({
     currentFolder: null,
     searchQuery: '',
     searchResults: null
   });
 
-  const [currentDocument, setCurrentDocument] = useState(null);
+  const [currentDocument, setCurrentDocument] = useState<Document | null>(null);
   const [isCreateDocumentOpen, setIsCreateDocumentOpen] = useState(false);
-  const [editingState, setEditingState] = useState({
+  const [editingState, setEditingState] = useState<EditingState>({
     document: null,
     content: ''
   });
+  const [activeTab, setActiveTab] = useState('edit');
 
   const { toast } = useToast();
   const { folders, createFolder, deleteFolder } = useFolders();
@@ -49,12 +65,10 @@ export function DocumentManager() {
 
   const handleSearch = async (query: string) => {
     setState(prev => ({ ...prev, searchQuery: query }));
-
     if (!query) {
       setState(prev => ({ ...prev, searchResults: null }));
       return;
     }
-
     try {
       const results = await api.searchDocuments(query);
       setState(prev => ({ ...prev, searchResults: results }));
@@ -68,7 +82,7 @@ export function DocumentManager() {
     }
   };
 
-  const handleDocumentClick = async (doc) => {
+  const handleDocumentClick = async (doc: HistoryItem) => {
     try {
       const document = await api.getDocument(doc.id);
       setCurrentDocument(document);
@@ -83,14 +97,14 @@ export function DocumentManager() {
     }
   };
 
-  const handleCreateDocument = async (e) => {
+  const handleCreateDocument = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!state.currentFolder) return;
 
-    const formData = new FormData(e.target);
+    const formData = new FormData(e.currentTarget);
     const data = {
-      title: formData.get('title'),
-      content: formData.get('content')
+      title: String(formData.get('title')),
+      content: String(formData.get('content'))
     };
 
     try {
@@ -100,7 +114,7 @@ export function DocumentManager() {
         description: "Document created successfully",
       });
       setIsCreateDocumentOpen(false);
-      e.target.reset();
+      e.currentTarget.reset();
     } catch (error) {
       console.error(error);
       toast({
@@ -111,7 +125,7 @@ export function DocumentManager() {
     }
   };
 
-  const handleEditDocument = (document) => {
+  const handleEditDocument = (document: Document) => {
     setEditingState({
       document,
       content: document.content
@@ -138,8 +152,12 @@ export function DocumentManager() {
     }
   };
 
+  const handlePreviewContent = (): string => {
+    const textarea = document.querySelector('textarea[name="content"]') as HTMLTextAreaElement;
+    return textarea?.value || '';
+  };
+
   const documentsToDisplay = state.searchResults || documents;
-  const [activeTab, setActiveTab] = useState('edit');
 
   return (
     <div className="flex h-screen">
@@ -199,7 +217,7 @@ export function DocumentManager() {
                   </TabsContent>
                   <TabsContent value="preview" className="mt-0">
                     <div className="min-h-[400px] p-4 border rounded-md bg-white">
-                      <MarkdownPreview content={document.querySelector('textarea[name="content"]')?.value} />
+                      <MarkdownPreview content={handlePreviewContent()} />
                     </div>
                   </TabsContent>
                 </Tabs>
